@@ -1,0 +1,145 @@
+---
+title: Лабораторная работа №2 – Визуализация данных с помощью ggplot2 (функция ggplot)
+  и plotly (функции ggplotly и plot_ly)
+author: "Razor_Z_Pi"
+date: "2024-02-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Задание 1 (Вариант 4)
+
+Задание 1 – Используя исходное изображение, повторите его с помощью функции ggplot пакета ggplot2
+
+```{r}
+library(ggplot2)
+
+summary(iris)
+
+ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  geom_smooth(method = "loess", colour = "black") +
+  geom_smooth() +
+  labs(
+    title = "Связь длины и ширины чашелистника Ирисов Фишера",
+    x = "Длина чашелистника, см",
+    y = "Ширина чашелистника, см",
+    content = "Вид ириса",
+    color='Вид ириса'
+  )
+
+```
+
+## Задание 2 (Вариант 4)
+
+Задание 2 – С помощью функции ggplot постройте два произвольных графика, показав умение использовать различные элементы грамматики графики, для набора данных по заданному варианту. Дайте описание набору данных и то, что показывает изображенный график. Добавьте интерактивность в графики с использованием функции ggplotly. Повторите выполнение графика с помощью функции plot_ly (таким образом в отчете должно быть представлено 6 графиков).
+
+```{r}
+library(ggplot2)
+
+summary(CO2)
+
+ggplot(CO2, aes(x = conc, y = uptake, color = Type)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Поглощение диоксида углерода травянистыми растениями",
+    caption = "Данные",
+    x = "Концентрация CO2 в окружающей среде (мл/л)",
+    y = "Скорость поглощения CO2 (ммоль/м^2 сек)",
+    color = "Река",
+    tag = "Первый",
+  )
+```
+
+```{r}
+library(ggplot2)
+
+summary(CO2)
+
+ggplot(CO2, aes(x = conc, y = uptake, color = Type)) +
+  geom_point() +
+  geom_area() +
+  geom_line() +
+  labs(
+    title = "Поглощение диоксида углерода травянистыми растениями",
+    caption = "Данные",
+    x = "Концентрация CO2 в окружающей среде (мл/л)",
+    y = "Скорость поглощения CO2 (ммоль/м^2 сек)",
+    color = "Река",
+    tag = "Второй",
+  )
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+summary(CO2)
+
+item <- ggplot(CO2, aes(x = conc, y = uptake, color = Type)) +
+  geom_line() +
+  geom_point() +
+  labs(
+    title = "Поглощение диоксида углерода травянистыми растениями",
+    x = "Концентрация CO2 в окружающей среде (мл/л)",
+    y = "Скорость поглощения CO2 (ммоль/м^2 сек)",
+    color = "Река"
+  )
+
+ggplotly(item)
+
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+summary(CO2)
+
+item2 <- ggplot(CO2, aes(x = conc, y = uptake, color = Type)) +
+  geom_point(aes(fill = I("blue"))) +
+  geom_area() +
+  geom_line() +
+  labs(
+    title = "Поглощение диоксида углерода травянистыми растениями",
+    x = "Концентрация CO2 в окружающей среде (мл/л)",
+    y = "Скорость поглощения CO2 (ммоль/м^2 сек)",
+    color = "Река"
+  )
+
+ggplotly(item2)
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+summary(CO2)
+
+plot_ly(CO2, x = ~conc, color = ~Type) %>%
+  add_markers(y = ~uptake) %>%
+  add_lines(y = ~uptake) %>%
+  layout(title = 'Поглощение диоксида углерода травянистыми растениями',
+         xaxis = list(title = 'Концентрация CO2 в окружающей среде (мл/л)'),
+         yaxis = list(title = 'Скорость поглощения CO2 (ммоль/м^2 сек)'),
+         legend = list(title = list(text = "Река")))
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+
+summary(CO2)
+
+plot_ly(CO2, x = ~conc, color = ~Type) %>%
+  add_markers(y = ~uptake) %>%
+  add_lines(y =~uptake, mode = "lines",  fill = "tozeroy") %>% 
+  layout(title = 'Поглощение диоксида углерода травянистыми растениями',
+         xaxis = list(title = 'Концентрация CO2 в окружающей среде (мл/л)'),
+         yaxis = list(title = 'Скорость поглощения CO2 (ммоль/м^2 сек)'),
+         legend = list(title = list(text = "Река")))
+```
